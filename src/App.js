@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import react, { useState } from "react"
+import InputComponent from "./inputComponent"
+import TodoListComponent from "./todoListComponent"
+
 
 function App() {
+  const [inputValue, setInputValue] = useState('')
+  const [todos, setTodos] = useState([])
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value)
+  }
+  const handleSubmit = (e) => {
+    if (inputValue === "") return;
+    setTodos([...todos, { val: inputValue, done: false }])
+    setInputValue("")
+    console.log(todos)
+  }
+  const deleteTodo = (todoText) => {
+    setTodos(todos.filter((todo) => todo.val !== todoText))
+  }
+
+  const markDone = (todo) => {
+    setTodos([...todos.filter(t => t.val !== todo.val),
+    { val: todo.val, done: !todo.done }])
+    console.table(todos)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        <InputComponent
+          value={inputValue}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit} />
+        <TodoListComponent
+          todos={todos}
+          deleteTodo={deleteTodo}
+          markDone={markDone} />
+      </div>
+    </>
   );
 }
 
