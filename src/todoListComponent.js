@@ -15,7 +15,7 @@ function TodoListComponent(props) {
                 {
                     props.todos.map((todo) => {
                         return (
-                            <Grid item>
+                            <Grid item key={todo.id}>
                                 <Paper style={{ padding: "0.8rem" }}>
                                     <Grid container
                                         style={{ padding: '0, 8rem' }} justify="space-between">
@@ -29,7 +29,7 @@ function TodoListComponent(props) {
                                         </Grid>
                                     </Grid>
                                     <Typography variant="body2">
-                                        Due: {todo.due}
+                                        Due: {todo.dueDate}
                                     </Typography>
                                     <ButtonGroup
                                         style={{ paddingTop: "12px" }}
@@ -37,10 +37,12 @@ function TodoListComponent(props) {
                                         size="small"
                                         color="primary"
                                         aria-label="outlined primary button group">
-                                        <IconButton>
+                                        <IconButton onClick={() => { props.handleDelete(todo.id) }}>
                                             <DeleteIcon></DeleteIcon>
                                         </IconButton>
-                                        <IconButton>
+                                        <IconButton onClick={() => {
+                                            props.handleEditClick(todo)
+                                        }}>
                                             <EditIcon />
                                         </IconButton>
                                         <IconButton>

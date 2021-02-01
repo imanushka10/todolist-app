@@ -2,15 +2,10 @@ import React from 'react'
 import { useFormik } from "formik"
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core"
 
-const FormComponent = () => {
-    const formik = useFormik({
-        initialValues: {
-            todoText: "test",
-            priority: "Low",
-        }
-    });
 
-    console.log(formik.values)
+
+const FormComponent = ({ formik }) => {
+
     return (
         <>
             <Grid container direction="column" spacing={2}>
@@ -40,11 +35,14 @@ const FormComponent = () => {
                 <Grid item>
                     <TextField type="date"
                         label="due date" variant="outlined"
-                        defaultValue="22/12/2020"
+                        defaultValue="2020-12-20"
                         style={{ width: "100%" }}
                         InputLabelProps={{
                             shrink: true,
-                        }}></TextField>
+                        }}
+                        name="dueDate"
+                        onChange={formik.handleChange}
+                        value={formik.values.dueDate}></TextField>
 
                 </Grid>
             </Grid>

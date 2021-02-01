@@ -1,11 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import HeaderComponent from "./headerComponent"
 import TodoListComponent from "./todoListComponent"
 import uuid from "react-uuid"
 import EditModalComponent from "./editModalComponent"
 import { Container, CssBaseline } from "@material-ui/core"
 import FormDialogComponent from "./formDialogComponent"
-
+import { useFormik } from "formik"
 
 // function useLocalStorageState(key, defaultValue = '') {
 //   const [state, setState] = React.useState(
@@ -66,30 +66,32 @@ function App() {
   // }
 
 
-  const [todos, setTodos] = useState([
-    {
-      val: "todo1",
-      priority: "high",
-      due: "2th june"
-    },
-    {
-      val: "todo2",
-      priority: "med",
-      due: "12th june"
-    },
-    {
-      val: "todo3",
-      priority: "low",
-      due: "22th june"
-    },
-    {
-      val: "todo4",
-      priority: "med",
-      due: "20th june"
-    }
-  ])
+  const [todos, setTodos] = useState([{
+    id: 1,
+    val: "todo",
+    priority: "Low",
+    dueDate: "2020-12-20"
+  }])
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [editTodo, setEditTodo] = useState({})
+
+  useEffect(() => {
+    if (isEditMode) {
+      formik.values.todoText = editTodo.val;
+      formik.values.priority = editTodo.priority;
+      formik.values.dueDate = editTodo.dueDate
+    }
+    else {
+      formik.values.todoText = ""
+      formik.values.priority = "Low"
+      formik.values.dueDate = getCurrentDate()
+    }
+
+  }, [isEditMode])
+
+
 
   const handleFabClick = () => {
     console.log('click')
@@ -97,22 +99,80 @@ function App() {
   const handleDialogOpen = () => {
     setIsDialogOpen(true)
   }
-
-
   const handleDialogClose = () => {
     setIsDialogOpen(false)
+    if (isEditMode) setIsEditMode(false)
   }
+
+  const handleSubmit = (e) => {
+    const { todoText, priority, dueDate } = formik.values
+    if (!isEditMode) {
+      setTodos([...todos, {
+        id: uuid(), val: todoText,
+        priority: priority, dueDate: dueDate
+      }])
+    }
+    else {
+      const newTodos = [...todos]
+      const t = newTodos.find(t => t.id === editTodo.id)
+      t.val = todoText
+      t.priority = priority
+      t.dueDate = dueDate
+      setIsEditMode(false)
+      setEditTodo({})
+      setTodos(newTodos)
+    }
+    setIsDialogOpen(false)
+    formik.values.todoText = ""
+    formik.values.priority = "Low"
+    formik.values.dueDate = getCurrentDate()
+
+  }
+
+  const handleDelete = (id) => {
+    const newTodos = [...todos]
+    setTodos([...newTodos.filter(t => t.id !== id)])
+  }
+
+  const handleEditClick = (todo) => {
+    setIsDialogOpen(true)
+    setIsEditMode(true)
+    setEditTodo(todo)
+  }
+
+  const getCurrentDate = () => {
+    const now = new Date()
+    return now.toISOString().slice(0, 10)
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      todoText: "",
+      priority: "Low",
+      dueDate: getCurrentDate()
+    }
+  });
+
+  console.log(formik.values)
+
+
 
   return (
     <>
       <CssBaseline />
       <Container>
         <HeaderComponent handleFabClick={handleDialogOpen} />
-        <TodoListComponent todos={todos} />
+        <TodoListComponent todos={todos}
+          handleDelete={handleDelete}
+          handleEditClick={handleEditClick} />
       </Container>
       <FormDialogComponent
         open={isDialogOpen}
-        handleClose={handleDialogClose} />
+        handleClose={handleDialogClose}
+        handleSubmit={handleSubmit}
+        formik={formik}
+        isEditMode={isEditMode}
+      />
       {/* <div>
         <HeaderComponent
           value={inputValue}
