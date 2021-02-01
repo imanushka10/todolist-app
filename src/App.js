@@ -22,7 +22,7 @@ function App() {
   const [inputValue, setInputValue] = useState('')
   const [todos, setTodos] = useLocalStorageState('todos', [])
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [editTodoId, setEditTodoId] = useState('')
+  const [editTodoState, setEditTodoState] = useState({})
 
 
   const handleSubmit = (e) => {
@@ -36,9 +36,7 @@ function App() {
   const handleChange = (e) => {
     setInputValue(e.target.value)
   }
-  // const deleteTodo = (todo) => {
-  //   setTodos(todos.filter((todo) => todo.val !== todoText))
-  // }
+
   const deleteTodo = (todo) => {
     setTodos(todos.filter((t) => t.id !== todo.id))
   }
@@ -51,12 +49,18 @@ function App() {
 
   const editTodo = (todo) => {
     setIsEditModalOpen(true)
-    setEditTodoId(todo.id)
+    setEditTodoState(todo)
   }
 
-  //   const updateTodo = (todo) => {
-  // setEditTodoId
-  //   }
+  const updateTodo = (e, todoText) => {
+    e.preventDefault()
+    const newTodos = [...todos]
+    const t = newTodos.find(t => t.id === editTodoState.id)
+    t.val = todoText
+    setTodos(newTodos)
+    setEditTodoState({})
+    setIsEditModalOpen(false)
+  }
 
   return (
     <>
@@ -66,7 +70,8 @@ function App() {
           handleChange={handleChange}
           handleSubmit={handleSubmit} />
         < EditModalComponent isOpen={isEditModalOpen}
-          todoId={editTodoId} />
+          todo={editTodoState}
+          updateTodo={updateTodo} />
 
         <TodoListComponent
           todos={todos}
