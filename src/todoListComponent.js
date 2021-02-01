@@ -31,6 +31,7 @@ function TodoListComponent(props) {
                                     <Typography variant="body2">
                                         Due: {todo.dueDate}
                                     </Typography>
+                                    <Typography>Des: {todo.des}</Typography>
                                     <ButtonGroup
                                         style={{ paddingTop: "12px" }}
                                         variant="text"
@@ -56,23 +57,6 @@ function TodoListComponent(props) {
                     })
                 }
             </Grid>
-
-
-
-            {/* {props.todos.map((todo) => {
-                return (
-                    <div key={todo.id}
-                        className={(todo.done ? "border-green-400" : "border-orange-300")}>
-                        <span className={(todo.done ? "line-through" : "")}
-                            onClick={(e) => { props.markDone(todo) }}>{todo.val}</span>
-                        <button className="mr-4" onClick={e => { props.editTodo(todo) }}>
-                            ✏️</button>
-                        <button
-                            onClick={(e) => { props.deleteTodo(todo) }}>
-                            ❌
-                    </button>
-                    </div>)
-            })} */}
         </>
     )
 }

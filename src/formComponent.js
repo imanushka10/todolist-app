@@ -1,5 +1,4 @@
 import React from 'react'
-import { useFormik } from "formik"
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core"
 
 
@@ -16,6 +15,14 @@ const FormComponent = ({ formik }) => {
                         name="todoText"
                         onChange={formik.handleChange}
                         value={formik.values.todoText} />
+                </Grid>
+                <Grid item>
+                    <TextField
+                        label="Add description..."
+                        variant="outlined"
+                        name="des"
+                        onChange={formik.handleChange}
+                        value={formik.values.des} />
                 </Grid>
                 <Grid item>
                     <FormControl variant="filled" style={{ width: "100%" }}>

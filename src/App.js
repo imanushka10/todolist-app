@@ -77,16 +77,35 @@ function App() {
   const [isEditMode, setIsEditMode] = useState(false)
   const [editTodo, setEditTodo] = useState({})
 
+
+
+  const getCurrentDate = () => {
+    const now = new Date()
+    return now.toISOString().slice(0, 10)
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      todoText: "",
+      priority: "Low",
+      des: "hello im description",
+      dueDate: getCurrentDate()
+    }
+  });
+
   useEffect(() => {
     if (isEditMode) {
       formik.values.todoText = editTodo.val;
+      formik.values.des = editTodo.des
       formik.values.priority = editTodo.priority;
       formik.values.dueDate = editTodo.dueDate
     }
     else {
       formik.values.todoText = ""
+      formik.values.des = ""
       formik.values.priority = "Low"
       formik.values.dueDate = getCurrentDate()
+
     }
 
   }, [isEditMode])
@@ -105,10 +124,10 @@ function App() {
   }
 
   const handleSubmit = (e) => {
-    const { todoText, priority, dueDate } = formik.values
+    const { todoText, des, priority, dueDate } = formik.values
     if (!isEditMode) {
       setTodos([...todos, {
-        id: uuid(), val: todoText,
+        id: uuid(), val: todoText, des: des,
         priority: priority, dueDate: dueDate
       }])
     }
@@ -116,6 +135,7 @@ function App() {
       const newTodos = [...todos]
       const t = newTodos.find(t => t.id === editTodo.id)
       t.val = todoText
+      t.des = des
       t.priority = priority
       t.dueDate = dueDate
       setIsEditMode(false)
@@ -124,6 +144,7 @@ function App() {
     }
     setIsDialogOpen(false)
     formik.values.todoText = ""
+    formik.values.des = ""
     formik.values.priority = "Low"
     formik.values.dueDate = getCurrentDate()
 
@@ -139,22 +160,6 @@ function App() {
     setIsEditMode(true)
     setEditTodo(todo)
   }
-
-  const getCurrentDate = () => {
-    const now = new Date()
-    return now.toISOString().slice(0, 10)
-  }
-
-  const formik = useFormik({
-    initialValues: {
-      todoText: "",
-      priority: "Low",
-      dueDate: getCurrentDate()
-    }
-  });
-
-  console.log(formik.values)
-
 
 
   return (
@@ -173,21 +178,6 @@ function App() {
         formik={formik}
         isEditMode={isEditMode}
       />
-      {/* <div>
-        <HeaderComponent
-          value={inputValue}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit} />
-        < EditModalComponent isOpen={isEditModalOpen}
-          todo={editTodoState}
-          updateTodo={updateTodo} />
-
-        <TodoListComponent
-          todos={todos}
-          deleteTodo={deleteTodo}
-          markDone={markDone}
-          editTodo={editTodo} />
-      </div> */}
     </>
   );
 }

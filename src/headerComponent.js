@@ -20,23 +20,9 @@ function HeaderComponent({ handleFabClick }) {
                         onClick={handleFabClick}
                         size="medium" color="primary">
                         <AddIcon />
-
                     </Fab>
                 </Grid>
             </Grid>
-            {/* <form onSubmit={props.handleSubmit}>
-                <div>
-                    <label>Enter Task</label>
-                    <input type="text"
-                        value={props.value}
-                        onChange={props.handleChange}
-                        style={{ border: "1px solid black" }}
-                        placeholder="Eg: Learn React !!"></input>
-
-                </div>
-                <button type="submit">
-                    ➕</button>
-            </form> */}
         </>
     )
 }
