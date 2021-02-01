@@ -1,5 +1,9 @@
 import React from 'react'
-import { Grid, Paper, Typography, Chip } from "@material-ui/core"
+import { ButtonGroup, IconButton, Button, Grid, Paper, Typography, Chip } from "@material-ui/core"
+import DeleteIcon from "@material-ui/icons/Delete"
+import EditIcon from "@material-ui/icons/Edit"
+import DoneIcon from "@material-ui/icons/Done"
+
 function TodoListComponent(props) {
 
     return (
@@ -27,6 +31,23 @@ function TodoListComponent(props) {
                                     <Typography variant="body2">
                                         Due: {todo.due}
                                     </Typography>
+                                    <ButtonGroup
+                                        style={{ paddingTop: "12px" }}
+                                        variant="text"
+                                        size="small"
+                                        color="primary"
+                                        aria-label="outlined primary button group">
+                                        <IconButton>
+                                            <DeleteIcon></DeleteIcon>
+                                        </IconButton>
+                                        <IconButton>
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton>
+                                            <DoneIcon />
+                                        </IconButton>
+
+                                    </ButtonGroup>
                                 </Paper>
                             </Grid>
                         )
