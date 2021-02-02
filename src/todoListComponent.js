@@ -15,23 +15,25 @@ function TodoListComponent(props) {
                 {
                     props.todos.map((todo) => {
                         return (
-                            <Grid item key={todo.id}>
+                            <Grid item key={todo.id} >
                                 <Paper style={{ padding: "0.8rem" }}>
                                     <Grid container
                                         style={{ padding: '0, 8rem' }} justify="space-between">
                                         <Grid item>
                                             <Typography variant="h6">{todo.val}</Typography>
                                         </Grid>
+
                                         <Grid item>
                                             <Chip color="primary" label={todo.priority}
                                                 size="small">
                                             </Chip>
                                         </Grid>
                                     </Grid>
+                                    <Typography>Des: {todo.des}</Typography>
+
                                     <Typography variant="body2">
                                         Due: {todo.dueDate}
                                     </Typography>
-                                    <Typography>Des: {todo.des}</Typography>
                                     <ButtonGroup
                                         style={{ paddingTop: "12px" }}
                                         variant="text"
